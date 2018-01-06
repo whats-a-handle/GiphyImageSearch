@@ -72,7 +72,7 @@ function createSearch(term, limit){
 	        	method: "GET",
 	        	crossDomain: true,
 	        	xhrFields: {
-       				withCredentials: true
+       				withCredentials: false
     			}
     			
 	      	}).done(function(response){
