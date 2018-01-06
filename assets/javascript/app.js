@@ -1,14 +1,38 @@
 
 //WIP
-function createGif(title, rating, stillGif,animatedGif){
+
+function createPageHandler(){
+
+
+	const PageHandler = {
+
+		gifList : []
+
+
+
+
+
+
+
+
+
+
+
+	}
+
+	return PageHandler;
+}
+
+//WIP
+function createGif(title, rating){
 
 	const Gif = {
 
 		title:title,
 		rating:rating,
-		stillGif:stillGif,
-		animatedGif:animatedGif,
-		playGif:function(){
+		//stillGif:stillGif,
+		//animatedGif:animatedGif,
+		playGif : function(){
 
 		}
 
@@ -21,15 +45,9 @@ function createGif(title, rating, stillGif,animatedGif){
 function createSearch(term, limit){
 
 	const endpointURL = 'http://api.giphy.com/v1/gifs/search?';
-	const apiKey = 'Xf7PPUM1XuuApnCxWAbDigorZErENhef';
+	const apiKey = 'Xf7PPUM1XuuApnCxWAbDigorZErENhef'; //this is just for testing so nbd that it's uploaded.
 
 	const Search = {
-
-		endpointURL: endpointURL,
-		apiKey: apiKey,
-		term : term,
-		limit : limit,
-
 		queryURL : function(){
 			let endpointURL = this.endpointURL;
 			endpointURL +='api_key=' + apiKey + '&';
@@ -41,17 +59,31 @@ function createSearch(term, limit){
 
 
 		getResults : function(){
+			const gifResults = this.gifResults;
 
 			$.ajax({
 	        	url: this.queryURL(),
 	        	method: "GET"
 	      	}).done(function(response){
-	      		console.log(response); //this will actually call createGif. We're just testing for now.
+
+	      		response.data.map(function(gif){gifResults.push(createGif(gif.title,gif.rating))});
+	      		 
 	      	});
 
-	      	//return gif;
-	    }
+	      	return gifResults;
+	    },
+
+
+	    endpointURL: endpointURL,
+		apiKey: apiKey,
+		term : term,
+		limit : limit,
+		gifResults : [],
+		rawResponse : [],
+    
 	}
+
+	Search.gifList = Search.getResults();
 
 	return Search;
 }
@@ -60,8 +92,10 @@ function createSearch(term, limit){
 $(document).ready(function(){
 	//testing 
 	let search = createSearch('cats',2);
+	console.log(search.gifResults);
+	
 
-	search.getResults();
+	
 
 
 });
