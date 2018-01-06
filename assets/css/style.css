@@ -1,7 +1,6 @@
-
 body{
 
-background-color:#022B3A;
+	background-color:#7AD9DC;
 
 }
 
@@ -10,9 +9,12 @@ background-color:#022B3A;
 	margin-top:70px;
 }
 .jumbotron{
-	background-color: #E1E5F2;
+
+	background-color: inherit;
+
 }
 .page-header{
-	color:white;
+
+	color:#FFF;
 }
 
