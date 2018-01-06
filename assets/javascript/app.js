@@ -1,6 +1,3 @@
-
-//WIP
-
 function createPageHandler(){
 
 	const PageHandler = {
@@ -13,7 +10,8 @@ function createPageHandler(){
 			element +=
 			element +='<div class=\"col-sm-4\">';
 			element +='<div class=\"thumbnail\">';
-			element +='<img src=\"' + gif.stillGif + '\">';
+			element +='<img src=\"' + gif.stillGif + '\" is-playing=\"false\" still-gif=\"' + 
+						gif.stillGif +'\"'+ ' animated-gif=\"' + gif.animatedGif +'\">';
 			element +='<div class=\"caption text-center\">';
 			element +='<h3>' + gif.title + '</h3>';
 			element +='<h4> Rating: ' + gif.rating + '</h4>';
@@ -50,7 +48,7 @@ function createGif(title, rating, stillGif,animatedGif){
 
 }
 
-//Rough and functional
+
 function createSearch(term, limit){
 
 	const Search = {
@@ -70,6 +68,8 @@ function createSearch(term, limit){
 			$.ajax({
 	        	url: this.queryURL(),
 	        	method: "GET",
+	        	//the following is needed because of some security issues. I guess the api loads images/script from non-https source
+	        	//chrome doesnt like that
 	        	crossDomain: true,
 	        	xhrFields: {
        				withCredentials: false,
@@ -78,7 +78,6 @@ function createSearch(term, limit){
     			
 	      	}).done(function(response){
 
-	      		//console.log(response.data);
 	      		response.data.map(function(gif){
 	      			gifResults.push(createGif(gif.title,gif.rating,
 	      				gif.images.fixed_height_still.url,
@@ -107,6 +106,23 @@ $(document).ready(function(){
 		const pageHandler = createPageHandler();
 		const search = createSearch($('.search-input').val(),9);
 		search.getResults(pageHandler);
+
+	});
+
+	$(document).on('click', 'img', function(){
+
+		const isPlaying = $(this).attr('is-playing');
+
+		if(isPlaying === 'false'){
+
+			$(this).attr('src', $(this).attr('animated-gif'));
+			$(this).attr('is-playing', 'true');
+		}
+		else if(isPlaying === 'true'){
+			$(this).attr('src', $(this).attr('still-gif'));
+			$(this).attr('is-playing', 'false');
+		}
+
 
 	});
 	
