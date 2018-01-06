@@ -56,7 +56,7 @@ function createSearch(term, limit){
 	const Search = {
 		queryURL : function(){
 			let endpointURL = this.endpointURL;
-			endpointURL +='api_key=' + apiKey + '&';
+			endpointURL +='api_key=' + this.apiKey + '&';
 			endpointURL +='q=' + term + '&';
 			endpointURL +='limit=' + limit;
 
@@ -85,8 +85,6 @@ function createSearch(term, limit){
 	    //i'm aware that people can use this key...it's just for fun
 	    endpointURL : 'http://api.giphy.com/v1/gifs/search?',
 		apiKey : 'Xf7PPUM1XuuApnCxWAbDigorZErENhef',
-	    endpointURL: endpointURL,
-		apiKey: apiKey,
 		term : term,
 		limit : limit,
     
