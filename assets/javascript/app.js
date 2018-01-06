@@ -72,7 +72,8 @@ function createSearch(term, limit){
 	        	method: "GET",
 	        	crossDomain: true,
 	        	xhrFields: {
-       				withCredentials: false
+       				withCredentials: false,
+       				'Access-Control-Allow-Origin': '*',
     			}
     			
 	      	}).done(function(response){
