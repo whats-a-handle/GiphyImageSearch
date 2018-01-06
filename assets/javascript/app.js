@@ -6,35 +6,48 @@ function createPageHandler(){
 
 	const PageHandler = {
 
-		gifList : []
+		targetContainer : $('.row-image-container'),
 
+		createGifContainer : function(gif){
+			let element = '';
 
+			element +=
+			element +='<div class=\"col-sm-4\">';
+			element +='<div class=\"thumbnail\">';
+			element +='<img src=\"' + gif.stillGif + '\">';
+			element +='<div class=\"caption text-center\">';
+			element +='<h3>' + gif.title + '</h3>';
+			element +='<h4> Rating: ' + gif.rating + '</h4>';
+			element +='</div>';
+			element +='</div>';
+			element +='</div>';
+			
+			this.targetContainer.append(element);
+		},
 
+		clearGifContainers : function(){
 
-
-
-
-
-
-
+			this.targetContainer.empty();
+		},
 
 	}
+
+	PageHandler.clearGifContainers();
 
 	return PageHandler;
 }
 
+
 //WIP
-function createGif(title, rating){
+function createGif(title, rating, stillGif,animatedGif){
 
 	const Gif = {
 
 		title:title,
 		rating:rating,
-		//stillGif:stillGif,
-		//animatedGif:animatedGif,
-		playGif : function(){
-
-		}
+		stillGif:stillGif,
+		animatedGif:animatedGif,
+		
 
 	}
 	return Gif;
@@ -43,9 +56,6 @@ function createGif(title, rating){
 
 //Rough and functional
 function createSearch(term, limit){
-
-	const endpointURL = 'http://api.giphy.com/v1/gifs/search?';
-	const apiKey = 'Xf7PPUM1XuuApnCxWAbDigorZErENhef'; //this is just for testing so nbd that it's uploaded.
 
 	const Search = {
 		queryURL : function(){
@@ -58,44 +68,50 @@ function createSearch(term, limit){
 		},
 
 
-		getResults : function(){
-			const gifResults = this.gifResults;
+		getResults : function(pageHandler){
+			const gifResults = [];
 
 			$.ajax({
 	        	url: this.queryURL(),
 	        	method: "GET"
 	      	}).done(function(response){
 
-	      		response.data.map(function(gif){gifResults.push(createGif(gif.title,gif.rating))});
+	      		//console.log(response.data);
+	      		response.data.map(function(gif){
+	      			gifResults.push(createGif(gif.title,gif.rating,
+	      				gif.images.fixed_height_still.url,
+	      				gif.images.fixed_height.url));});
+
+	      		gifResults.map(function(gif){pageHandler.createGifContainer(gif)});
 	      		 
 	      	});
 
-	      	return gifResults;
+	      	
 	    },
-
-
+	    //i'm aware that people can use this key...it's just for fun
+	    endpointURL : 'http://api.giphy.com/v1/gifs/search?';
+		apiKey : 'Xf7PPUM1XuuApnCxWAbDigorZErENhef';
 	    endpointURL: endpointURL,
 		apiKey: apiKey,
 		term : term,
 		limit : limit,
-		gifResults : [],
-		rawResponse : [],
     
 	}
 
-	Search.gifList = Search.getResults();
+	//Search.gifList = Search.getResults();
 
 	return Search;
 }
 
 
 $(document).ready(function(){
-	//testing 
-	let search = createSearch('cats',2);
-	console.log(search.gifResults);
+
+	$(document).on('click', '.search-button', function(){
+
+		const pageHandler = createPageHandler();
+		const search = createSearch($('.search-input').val(),9);
+		search.getResults(pageHandler);
+
+	});
 	
-
-	
-
-
 });
