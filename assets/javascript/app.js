@@ -69,7 +69,12 @@ function createSearch(term, limit){
 
 			$.ajax({
 	        	url: this.queryURL(),
-	        	method: "GET"
+	        	method: "GET",
+	        	crossDomain: true,
+	        	xhrFields: {
+       				withCredentials: true
+    			}
+    			
 	      	}).done(function(response){
 
 	      		//console.log(response.data);
