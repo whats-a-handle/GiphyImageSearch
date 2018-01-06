@@ -83,14 +83,12 @@ function createSearch(term, limit){
 	      	});    	
 	    },
 	    //i'm aware that people can use this key...it's just for fun
-	    endpointURL : 'http://api.giphy.com/v1/gifs/search?',
+	    endpointURL : 'https://api.giphy.com/v1/gifs/search?',
 		apiKey : 'Xf7PPUM1XuuApnCxWAbDigorZErENhef',
 		term : term,
 		limit : limit,
     
 	}
-
-	//Search.gifList = Search.getResults();
 
 	return Search;
 }
