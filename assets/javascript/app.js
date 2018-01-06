@@ -3,7 +3,6 @@
 
 function createPageHandler(){
 
-
 	const PageHandler = {
 
 		targetContainer : $('.row-image-container'),
@@ -38,7 +37,6 @@ function createPageHandler(){
 }
 
 
-//WIP
 function createGif(title, rating, stillGif,animatedGif){
 
 	const Gif = {
@@ -47,8 +45,6 @@ function createGif(title, rating, stillGif,animatedGif){
 		rating:rating,
 		stillGif:stillGif,
 		animatedGif:animatedGif,
-		
-
 	}
 	return Gif;
 
@@ -84,13 +80,11 @@ function createSearch(term, limit){
 
 	      		gifResults.map(function(gif){pageHandler.createGifContainer(gif)});
 	      		 
-	      	});
-
-	      	
+	      	});    	
 	    },
 	    //i'm aware that people can use this key...it's just for fun
-	    endpointURL : 'http://api.giphy.com/v1/gifs/search?';
-		apiKey : 'Xf7PPUM1XuuApnCxWAbDigorZErENhef';
+	    endpointURL : 'http://api.giphy.com/v1/gifs/search?',
+		apiKey : 'Xf7PPUM1XuuApnCxWAbDigorZErENhef',
 	    endpointURL: endpointURL,
 		apiKey: apiKey,
 		term : term,
