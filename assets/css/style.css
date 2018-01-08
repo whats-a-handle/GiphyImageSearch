@@ -6,7 +6,7 @@ body{
 
 .jumbo-container{
 
-	margin-top:70px;
+	margin-top:40px;
 }
 .jumbotron{
 
@@ -31,4 +31,11 @@ body{
 
 	height:200px;
 	width:200px;
+}
+.term-container{
+
+	margin-bottom:100px;
+}
+.search-button{
+	margin-top: 20px;
 }
