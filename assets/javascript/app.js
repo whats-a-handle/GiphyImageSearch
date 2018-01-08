@@ -2,8 +2,6 @@ function createPageHandler(){
 
 	const PageHandler = {
 
-		targetContainer : $('.row-image-container'),
-
 		createGifContainer : function(gif){
 			let element = '';
 
@@ -13,33 +11,67 @@ function createPageHandler(){
 			element +='<img src=\"' + gif.stillGif + '\" is-playing=\"false\" still-gif=\"' + 
 						gif.stillGif +'\"'+ ' animated-gif=\"' + gif.animatedGif +'\">';
 			element +='<div class=\"caption text-center\">';
-			element +='<h3>' + gif.title + '</h3>';
-			element +='<h4> Rating: ' + gif.rating + '</h4>';
+			//element +='<h4>' + gif.title + '</h4>';
+			element +='<h4> Rating: ' + gif.rating.toUpperCase() + '</h4>';
 			element +='</div>';
 			element +='</div>';
 			element +='</div>';
 			
-			this.targetContainer.append(element);
+			this.gifRowContainer.append(element);
 		},
 
-		clearGifContainers : function(){
+		createGifButton : function(term){
 
-			this.targetContainer.empty();
+			if(!this.gifTerms.includes(term)){
+				let element = '';
+				element+='<div class=\"col-sm-1 gif-term-column\">';
+				element+='<button type="submit" class=\"btn btn-default gif-term-button\" search-term=\"' + term +'\">' + term + '</button>';
+				element+='</div>';
+
+				this.gifTerms.push(term);
+				this.gifTermContainer.append(element);
+
+			}
+			
+
 		},
+
+		createDefaultGifButtons : function(){
+			const pageHandler = this;
+
+			pageHandler.defaultGifTerms.map(function(term){
+
+				pageHandler.createGifButton(term);
+
+			});
+		},
+
+		clearGifRowContainer : function(){
+
+			this.gifRowContainer.empty();
+		},
+		clearTermContainer : function(){
+			this.gifTermContainer.empty();
+		},
+		gifRowContainer : $('.row-image-container'),
+		gifTermContainer : $('.term-container'),
+		defaultGifTerms : ['cats','dogs','walrus','pokemon','sloth','star wars'],
+		gifTerms : [],
 
 	}
 
-	PageHandler.clearGifContainers();
+	PageHandler.createDefaultGifButtons();
+	
 
 	return PageHandler;
 }
 
 
-function createGif(title, rating, stillGif,animatedGif){
+function createGif(/*title,*/rating, stillGif,animatedGif){
 
 	const Gif = {
 
-		title:title,
+		//title:title,
 		rating:rating,
 		stillGif:stillGif,
 		animatedGif:animatedGif,
@@ -79,7 +111,9 @@ function createSearch(term, limit){
 	      	}).done(function(response){
 
 	      		response.data.map(function(gif){
-	      			gifResults.push(createGif(gif.title,gif.rating,
+	      			gifResults.push(createGif(
+	      				/*gif.title,*/
+	      				gif.rating,
 	      				gif.images.fixed_height_still.url,
 	      				gif.images.fixed_height.url));});
 
@@ -101,10 +135,23 @@ function createSearch(term, limit){
 
 $(document).ready(function(){
 
-	$(document).on('click', '.search-button', function(){
+	const pageHandler = createPageHandler();
 
-		const pageHandler = createPageHandler();
-		const search = createSearch($('.search-input').val(),9);
+	$(document).on('click', '.search-button', function(){
+		pageHandler.clearGifRowContainer();
+
+		const searchInput = $('.search-input').val();
+		const search = createSearch(searchInput,9);
+		pageHandler.createGifButton(searchInput);
+		search.getResults(pageHandler);
+
+	});
+
+	$(document).on('click', '.gif-term-button', function(){
+		pageHandler.clearGifRowContainer();
+
+		const searchInput = $(this).attr('search-term');
+		const search = createSearch(searchInput,9);
 		search.getResults(pageHandler);
 
 	});

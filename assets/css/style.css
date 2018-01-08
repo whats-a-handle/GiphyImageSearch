@@ -21,3 +21,14 @@ body{
 .how-to{
 	color:#FFF;
 }
+
+.gif-term-column{
+	margin-top:10px;
+	margin-left:50px;
+}
+
+.thumbnail>img{
+
+	height:200px;
+	width:200px;
+}
